@@ -1,0 +1,24 @@
+InvoiceFox API Stuff
+====================
+
+Visit www.invoicefox.com for more details.
+
+The code is evolving fast, this README will improve too.
+
+
+Plans
+-----
+
+- PHP
+    - Libs
+	- API Explorer
+	- JS API browser
+	- Example of integration (ecomm. site)
+
+- Python
+	- Libs
+	- Example of commandline client
+
+- Rebol
+	- Libs
+	- Example of client

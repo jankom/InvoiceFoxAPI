@@ -11,7 +11,7 @@ class StrpcAPI {
 
 	function call($resource, $method, $args) {
 
-		$data = is_string($args) ? $args : Format::dictToGETParams($args, "", "&");
+		$data = is_string($args) ? $args : $this->dictToParams($args, "", "&");
 
 		$header = "POST /API?_r={$resource}&_m={$method} HTTP/1.1\r\n".
 			"Host:www.invoicefox.com\r\n".
@@ -36,6 +36,16 @@ class StrpcAPI {
 
 		return new StrpcRes($result);
 
+	}
+
+	function dictToParams($array, $startWith='?', $delim='&amp;')
+	{
+		$r = array();
+		foreach ($array as $key => $val)
+		{
+			$r[] = "$key=$val";
+		}
+		return $startWith . implode($delim, $r);
 	}
 	
 

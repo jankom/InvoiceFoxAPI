@@ -34,9 +34,8 @@ form {
 </style>
 <h1>InvoiceFox API explorer</h1>
 <?php
-require_once "pulp/Format.php";
-require_once "strpcapi.php";
-require_once "invfoxapi.php";
+require_once "lib/strpcapi.php";
+require_once "lib/invfoxapi.php";
 
 if (isset($_POST['call'])) {
 	

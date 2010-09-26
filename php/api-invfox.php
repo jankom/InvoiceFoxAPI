@@ -23,33 +23,43 @@ if (isset($_POST['call'])) {
 								'street2' => 'asdsad'
 	));
 	
-	echo "<br/><div class='type'>response</div><pre class='resp'>"; print_r($resp->res); echo "</pre>";
+	echo "<br/><div class='type'>response</div><pre class='resp'>" . print_r($r->getData(), true) . "</pre>";
 	
-		$rd = json_decode($r, true);
+	if ($r->isOk()) {
 		
-		if ($rd[0] == 'ok') {
-			
-			$clientId = $rd[1][0]['id'];
+		$clientIdA = $r->getData();
+		$clientId = $clientIdA[0]['id'];
 
-			$r = $api->createInvoice(
+		$r = $api->createInvoice(
+						array(
+							'title' => 'INV00001',
+							'date_sent' => '10/22/2010',
+							'date_to_pay' => '11/04/2010',
+							'id_partner' => $clientId,
+							'vat_level' => 10
+						),
+						array(
 							array(
-							
+								'title' => 'custom programming',
+								'qty' => 20,
+								'mu' => 'hour',
+								'price' => 80
 							),
 							array(
-								array(
-
-								)
+								'title' => 'support on project',
+								'qty' => 6,
+								'mu' => 'hour',
+								'price' => 60
 							)
-			);
+						)
+		);
 
-			$rd = json_decode($r, true);
-
-			if ($rd[0] == 'ok') {
-
-				$api->downloadPDF($rd[1][0]['id']);
-
-			}
-
+		if ($r->isOk()) {
+			$invIdA = $r->getData();
+			$invId = $invIdA[0]['id'];
+			$api->downloadPDF($invId);
+			
+			echo "<p><a href='invoices/$invId.pdf'>Download PDF</a></p>";
 		}
 
 	}

@@ -8,15 +8,14 @@ class StrpcAPI {
 		$this->apitoken = $token;
 	}
 
-
 	function call($resource, $method, $args) {
 
 		$data = is_string($args) ? $args : $this->dictToParams($args, "", "&");
 
-		$header = "POST /API?_r={$resource}&_m={$method} HTTP/1.1\r\n".
-			"Host:www.invoicefox.com\r\n".
-			"Content-Type: application/x-www-form-urlencoded\r\n".
-			"User-Agent: PHP-Code\r\n".
+		$header = "POST /API?_r={$resource}&_m={$method} HTTP/1.1\r\n".         //todo -- domain is hardcoded now! FIX!!
+			"Host:www.invoicefox.com\r\n".										//separate function for post (and get req with basic auth)
+			"Content-Type: application/x-www-form-urlencoded\r\n".				//todo -- check encoding, should we add get case
+			"User-Agent: PHP-invfox-client\r\n".
 			"Content-Length: " . strlen($data) . "\r\n".
 			"Authorization: Basic ".base64_encode($this->apitoken.':x')."\r\n". // todo -- enable when we do basic auth on srv
 			"Connection: close\r\n\r\n";
@@ -33,8 +32,9 @@ class StrpcAPI {
 			}
 			fclose ($fp);
 		}
-
-		return new StrpcRes($result);
+		print_r($result);
+		$resultD = str_replace("'", '"', trim(substr($result, strpos($result, "\r\n\r\n") + 4)));
+		return new StrpcRes(json_decode($resultD, true));
 
 	}
 
@@ -60,6 +60,8 @@ class StrpcRes {
 	}
 
 	function isErr() { return $this->res[0] != 'ok'; }
+	
+	function isOk() { return $this->res[0] == 'ok'; }
 
 	function getErr() { return print_r($this->res, true); }
 

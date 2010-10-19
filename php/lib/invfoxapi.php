@@ -46,7 +46,7 @@ class InvfoxAPI {
 		if ($data === false) {
 			echo 'error downloading PDF';
 		} else {
-			$file = "invoices/".$id.".pdf";
+			$file = "../invoices/".$id.".pdf";
 			file_put_contents($file, $data);
 		}
 	}

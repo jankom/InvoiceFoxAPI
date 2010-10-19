@@ -25,14 +25,14 @@ class StrpcAPI {
 		if (!$fp) {
 			// HTTP ERROR
 		} else {
-			echo "<br/><div class='type'>request</div><pre class='req'>"; print_r($header . $data); echo "</pre>";
+			//echo "<br/><div class='type'>request</div><pre class='req'>"; print_r($header . $data); echo "</pre>";
 			fputs ($fp, $header . $data);
 			while (!feof($fp)) {
 				$result .= fgets ($fp, 128);
 			}
 			fclose ($fp);
 		}
-		print_r($result);
+		//print_r($result);
 		$resultD = str_replace("'", '"', trim(substr($result, strpos($result, "\r\n\r\n") + 4)));
 		return new StrpcRes(json_decode($resultD, true));
 
